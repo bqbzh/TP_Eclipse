@@ -34,7 +34,7 @@ public class ImageTraitement {
 	}
 	
 	/**
-	 * copie d'une image!
+	 * copie d'une image
 	 */
 	public ImageTraitement(ImageTraitement image){
 		_image=image._image;
@@ -105,32 +105,28 @@ public class ImageTraitement {
 	}
 	
 	/**
-	 * petit main simple pour construire une image 400x400, y tracer un pixel et sauver le resultat
-	 * dans le fichier test.png
-	 * 
-	 * @param args
+	 * Calcule l'histogramme d'une image
 	 */
-	public static void main(String[] args) {
-		/*ImageTraitement n = new ImageTraitement(400,400);
-		System.out.println("dimensions : "+n.getWidth()+"x"+n.getHeight());
-		//afficher l'image
-		n.show();
-		// mettre des pixels en niveau de gris
-		for(int i = 128; i<256; i++){
-			for(int j = 128; j<256; j++){
-				n.setPixel(i, j, 128);				
+	public ImageTraitement histogramme(){
+		int histo[] = new int[256];
+		for (int i = 0; i < _image.getWidth(); i++){
+			for (int j = 0; j < _image.getHeight(); j++){
+				histo[_image.getPixel(i, j)[0]]++;
 			}
 		}
-		// on sauve l'image
-		n.saveAsPng("./test.png");
-		*/		
-		
-		//on charge une image
-		ImageTraitement lena = new ImageTraitement("./lena.pgm");
-		lena.show();
-		
-		//int[] pixels = lena.getPixel(0, 0);
-		//System.out.println(pixels[0]+" "+pixels[1]+" "+pixels[2]+" "+pixels[3]);
-		
+		int max=0;
+		for (int i = 0; i < 256; i++){
+			if (histo[i] > max){
+				max = histo[i];
+			}
+		}
+		System.out.println(max);
+		ImageTraitement n = new ImageTraitement(256,max);
+		for (int i = 0; i < 256; i++){
+			for (int j = 0; j < histo[i]; j++){
+				n.setPixel(i, j, 255);
+			}
+		}
+		return n;
 	}
 }
